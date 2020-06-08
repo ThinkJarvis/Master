@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 
@@ -14,13 +16,14 @@ import com.app.master.databinding.ListFragmentBinding
 import com.app.master.expection.Failure
 import com.app.master.extension.getViewModelFactory
 import com.app.master.ui.adapter.PostAdapter
+import com.app.master.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.list_fragment.*
 
 class ListFragment : Fragment() {
 
     private lateinit var _viewDataBinding: ListFragmentBinding
     private val _listViewModel: ListViewModel by viewModels<ListViewModel> { getViewModelFactory() }
-
+    private val _mainViewModel by activityViewModels<MainViewModel> { getViewModelFactory() }
     private lateinit var _listAdapter: PostAdapter
 
     override fun onCreateView(
@@ -41,6 +44,9 @@ class ListFragment : Fragment() {
             it.either(::handleLoading, ::handleFailure) {}
         })
         _listViewModel.getAllPosts()
+        _mainViewModel.mainViewEventBus.observe(this.viewLifecycleOwner, Observer {
+            Log.d("wjq", "window focus $it")
+        })
     }
 
 

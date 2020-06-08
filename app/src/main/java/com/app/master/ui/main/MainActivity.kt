@@ -28,32 +28,11 @@ class MainActivity : AppCompatActivity() {
                 lifecycleOwner = this@MainActivity
                 mainViewModel = _mainViewModel
             }
-//        _mainViewModel.getAllPosts()
-//
-//        _mainViewModel.postLiveData.observe(this, Observer {
-//            it.either(::handleLoading, ::handleFailure, ::handleSuccess)
-//        })
     }
 
-
-    private fun handleLoading() {
-        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show()
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        _mainViewModel.mainViewEventBus.value = hasFocus
     }
 
-
-    private fun handleSuccess(posts: List<Post>) {
-        posts.forEach {
-            Logger.d("title = ${it.title}")
-        }
-
-    }
-
-
-    private fun handleFailure(failure: Failure) {
-        when (failure) {
-            is Failure.NetWorkError -> {
-                Toast.makeText(this, "NetWorkError", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 }

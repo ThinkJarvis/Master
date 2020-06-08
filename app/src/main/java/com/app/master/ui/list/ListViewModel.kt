@@ -15,7 +15,6 @@ class ListViewModel constructor(private val taskRepository: TaskRepository) : Vi
     private val _postLiveData = MutableLiveData<Either<Failure, List<Post>>>()
     val postLiveData = _postLiveData
 
-
     fun getAllPosts() {
         viewModelScope.launch {
             taskRepository.getAllPosts().collect {
