@@ -12,9 +12,8 @@ import retrofit2.Response
 
 class TaskRepository constructor(val postsDao: PostsDao, val apiService: ApiService) {
 
-    fun getAllPosts(): Flow<Either<Failure, List<Post>>> {
-
-        return object : NetworkBoundRepository<List<Post>, List<Post>>() {
+    fun getAllPosts(): Flow<Either<Failure, List<Post>>> =
+        object : NetworkBoundRepository<List<Post>, List<Post>>() {
 
             override suspend fun saveRemoteData(response: List<Post>) =
                 postsDao.insertPosts(response)
@@ -24,5 +23,4 @@ class TaskRepository constructor(val postsDao: PostsDao, val apiService: ApiServ
             override suspend fun fetchFromRemote(): Response<List<Post>> = apiService.getPosts()
 
         }.asFlow().flowOn(Dispatchers.IO)
-    }
 }
